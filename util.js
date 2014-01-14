@@ -11,6 +11,7 @@ var util = {
 
     var path = require('path');
     var configFile = path.resolve(util.getArgument('config') || 'config.js');
+    console.log('using config file: ' + configFile);
     _config = require(configFile);
     return _config;
   },

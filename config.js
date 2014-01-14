@@ -145,7 +145,7 @@ config.traders = [
   }
 ];
 
-config.debug = false; // for additional logging / debugging
+config.debug = true; // for additional logging / debugging
 
 module.exports = config;
 

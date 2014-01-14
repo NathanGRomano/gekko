@@ -38,3 +38,7 @@ dwsync.xml
 node_modules
 candles.csv
 cexio.db
+
+trades.csv
+
+config.custom.js
