@@ -37,6 +37,14 @@ config.normal = {
   username: 0, // your username, only fill in when using bitstamp or cexio
 }
 
+//mongodb
+
+config.mongodb = {
+  btce: {
+    uri: 'mongodb://localhost/btce_history' 
+  }
+};
+
 // want Gekko to send a mail on buy or sell advice?
 config.mail = {
   enabled: false,
