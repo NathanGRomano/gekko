@@ -42,6 +42,9 @@ config.normal = {
 config.mongodb = {
   btce: {
     uri: 'mongodb://localhost/btce_history' 
+  },
+  bitcoincharts: {
+    uri: 'mongodb://localhost/bitcoincharts_history' 
   }
 };
 

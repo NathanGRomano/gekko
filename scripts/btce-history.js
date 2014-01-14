@@ -12,6 +12,7 @@ var https = require('https')
 	, events = require('events')
   , config = require('../util').getConfig()
 	, BTCE = require('btc-e')
+  , moment = require('moment')
 	, key = config.normal.key
 	, secret = config.normal.secret
 	, uri ='https://btc-e.com/api/3/trades/btc_usd'
@@ -35,7 +36,7 @@ var Trade = mongoose.model('Trade', Schema);
 
 Poll
   .make()
-    .time((15)*1000)
+    .time(moment.duration(30,'seconds'))
     .on('polling', function () {
       console.log('polling...');  
     })

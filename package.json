@@ -21,7 +21,8 @@
     "async": "0.2.x",
     "nedb": "*",
     "line-reader": "0.2.x",
-    "mongoose": "~3.8.4"
+    "mongoose": "~3.8.4",
+    "csv-string": "~2.1.1"
   },
   "engines": {
     "node": "0.10.x"
