@@ -2,6 +2,9 @@
  *
  * polls bitcoin chart data and stores it into the database
  *
+ * TODO just use the csv import if you already have the file
+ * TODO this file should request the file from the api and import it
+ *
  */
 var http = require('https')
 	, mongoose = require('mongoose')
