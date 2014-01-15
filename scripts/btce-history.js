@@ -17,7 +17,7 @@ var https = require('https')
 	, secret = config.normal.secret
 	, uri ='https://btc-e.com/api/3/trades/btc_usd'
 	, btce = new BTCE(key, secret)
-  , Poll = require('./lib/poll');
+  , Poll = require('../lib/poll');
 	;
 
 mongoose.connect(config.mongodb.btce.uri);
