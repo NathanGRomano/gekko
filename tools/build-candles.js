@@ -1,35 +1,55 @@
-var moment = require('moment')
-  , csv = require('csv')
-  , nearest = require('../lib/nearest')
-  , bucket = require('../lib/bucket')
+var fs = require('fs')
+  , events = require('events')
+  , mongoose = require('mongoose')
+  , config = require('../util').getConfig()
+  , candleImporter = require('../lib/candle-importer')
   ;
 
-var buckets = {};
-buckets.yearly = bucket.make(moment.duration(1,'year'));
-buckets.monthly = bucket.make(moment.duration(1,'month'));
-buckets.weekly = bucket.make(moment.duration(1,'week'));
-buckets.daily = bucket.make(moment.duration(1,'day'));
-buckets.hourly = bucket.make(moment.duration(1,'hour'));
+mongoose.connect(config.mongodb.bitcoincharts.uri);
 
-var stdin = process.stdin;
-
-stdin.resume();
-stdin.setEncoding('utf8');
-
-csv()
-  .from(stdin)
-  .on('record', function (row, index) {
-    console.log('handling record: ' + index + '[' + row.join() + ']');
-    for (var k in buckets) {
-      buckets[k].add(row[0], row[1], row[2]);
-    }
-  })
-  .on('close', function (count) {
-    for (var k in buckets) {
-      fs.writeFileSync(__dirname + '/' + k + '.csv', buckets.toCSV());
-    }
-    console.log('number of lines: ' + count);
-  })
-  .on('error', function (err) {
-    console.error(err);
+var stats = new events.EventEmitter();
+stats.data = {'record':0, 'save error':0, 'saved':0, 'duplicate':0};
+stats.track = function () {
+  var args = Array.prototype.slice.call(arguments), self = this;
+  args.forEach(function(arg) {
+    self.emit('track', arg);
   });
+};
+stats.on('track', function (arg) {
+  this.data[arg] = this.data[arg] || 0;
+  this.data[arg]++;
+  this.emit('render');
+});
+stats.on('render', function () {
+  var output = [];
+  for (var k in this.data) {
+    output.push(k + ': ' + this.data[k]);
+  }
+  process.stdout.write(output.join(' ')+"\r");
+});
+
+console.log('Preparing...');
+
+candleImporter.make()
+  .setModel(mongoose.model('Candle', require('../lib/schema/candle')))
+  .addStream(fs.createReadStream('/Users/nromano/Downloads/btceUSD.csv',{flags:'r'}))
+  .on('record', function () {
+    stats.track('record');
+  })
+  .on('model save error', function () {
+    stats.track('save error');
+  })
+  .on('model saved', function () {
+    stats.track('saved');
+  })
+  .on('model duplicate', function () {
+    stats.track('duplicate');
+  })
+  .on('done', function () {
+    mongoose.connection.once('close', function () {
+      process.stdout.write('\n' + 'Records: ' + track.records + ' Failures: ' + track.failures + ' Duplicates: ' + track.duplicates + ' Successes: ' + track.successes + '\nDone.\n');
+      process.exit(0);
+    });
+    mongoose.disconnect() 
+  });
+
