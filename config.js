@@ -10,6 +10,14 @@ var config = {};
 // Gekko currently only supports Exponential Moving Averages
 config.tradingMethod = 'Exponential Moving Averages';
 
+// the candle fetcher we want to use
+config.candleFetcher = 'customCandleFetcher';
+
+// provider override
+config.providerOverride = {
+  'bitcoincharts': 'local' //use the local trade fetcher instead of bitcoincharts
+};
+
 // Exponential Moving Averages settings:
 config.EMA = {
   // timeframe per candle
