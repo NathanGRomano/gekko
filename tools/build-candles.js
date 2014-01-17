@@ -45,5 +45,3 @@ mongoose.connection.on('open', function (err) {
 });
 
 mongoose.connect(config.mongodb.bitcoincharts.uri);
-
-
