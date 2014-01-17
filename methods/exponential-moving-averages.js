@@ -45,8 +45,13 @@ if(backtesting) {
   var CandleMethod = require('../historicalCandleFetcher.js');
 }
 else {
-  if (config.candle_fetcher) {
-    CandleMethod = require('../'+config.candle_fetcher);
+  if (config.candleFetcher) {
+    try {
+      CandleMethod = require('../'+config.candleFetcher);
+    }
+    catch(e) {
+      CandleMethod = require('../realtimeCandleFetcher.js');
+    }
   }
   else {
     CandleMethod = require('../realtimeCandleFetcher.js');
