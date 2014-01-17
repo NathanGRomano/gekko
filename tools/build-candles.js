@@ -5,20 +5,18 @@ var fs = require('fs')
   , stats = require('../lib/stats')
   ;
 
-console.log('Preparing...');
-
-stats({records:0, 'saved': 0, 'save errors': 0, 'duplicates': 0})
-  .on('track', function () {
-    this.render();
-  });
+console.log('opening connection to mongodb...');
 
 mongoose.connection.on('open', function (err) {
 
-  if (err) {
-    return console.error(err);
-  }
+  if (err) return console.error(err);
 
   console.log('connected to mongodb...');
+
+  stats({records:0, 'saved': 0, 'save errors': 0, 'duplicates': 0})
+    .on('track', function () {
+      this.render();
+    });
 
   candleImporter.make()
     .setModel(mongoose.model('Candle', require('../lib/schema/candle')))
