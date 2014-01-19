@@ -2,6 +2,7 @@ var util = require('./util.js');
 var _ = require('lodash');
 var log = require('./log.js');
 var moment = require('moment');
+var growl = require('growl');
 
 var Logger = function(config) {
   this.config = util.getConfig();
@@ -43,6 +44,7 @@ Logger.prototype.inform = function(what, price, meta) {
     return;
 
   log.info('ADVICE is to', what, meta);
+  growl('ADVICE is to ' + what + ' ' + meta);
 }
 
 Logger.prototype.extractFee = function(amount) {

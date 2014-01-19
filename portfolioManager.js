@@ -16,6 +16,7 @@ var log = require('./log');
 var async = require('async');
 var exchangeChecker = require('./exchangeChecker.js');
 var exchanges = require('./exchanges.js');
+var growl = require('growl');
 
 var Manager = function(conf) {
   this.exchangeSlug = conf.exchange.toLowerCase();
@@ -177,12 +178,19 @@ Manager.prototype.buy = function(amount, price) {
     log.info('attempting to BUY',
              amount, this.asset,
              'at', this.exchange.name);
+    growl('attempting to BUY',
+             amount, this.asset,
+             'at', this.exchange.name);
     this.exchange.buy(amount, price, this.noteOrder);
     this.action = 'BUY';
-  } else
+  } else {
     log.info('wanted to buy but insufficient',
              this.currency,
              '(' + amount * price + ') at', this.exchange.name);
+    growl('wanted to buy but insufficient',
+             this.currency,
+             '(' + amount * price + ') at', this.exchange.name);
+   }
 }
 
 // first do a quick check to see whether we can sell
@@ -197,15 +205,22 @@ Manager.prototype.sell = function(amount, price) {
   var asset = this.getFund(this.asset);
   var minimum = this.getMinimum(price);
   if(amount > minimum) {
+    growl('attempting to SELL',
+             amount, this.asset,
+             'at', this.exchange.name);
     log.info('attempting to SELL',
              amount, this.asset,
              'at', this.exchange.name);
     this.exchange.sell(amount, price, this.noteOrder);
     this.action = 'SELL';
-  } else
+  } else {
+    growl('wanted to sell but insufficient',
+             this.asset,
+             '(' + amount + ') at', this.exchange.name);
     log.info('wanted to sell but insufficient',
              this.asset,
              '(' + amount + ') at', this.exchange.name);
+  }
 }
 
 Manager.prototype.noteOrder = function(order) {
@@ -221,11 +236,13 @@ Manager.prototype.checkOrder = function() {
   var finish = function(err, filled) {
     if(!filled) {
       log.info(this.action, 'order was not (fully) filled, canceling and creating new order');
+      growl(this.action, 'order was not (fully) filled, canceling and creating new order');
       this.exchange.cancelOrder(this.order);
       return this.trade(this.action);
     }
 
     log.info(this.action, 'was succesfull');
+    growl(this.action, 'was succesfull');
   }
 
   this.exchange.checkOrder(this.order, _.bind(finish, this));
