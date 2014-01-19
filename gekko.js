@@ -66,6 +66,10 @@ if(provider === 'btce' || provider === 'bitstamp') {
   config.watch.market = provider;
   provider = 'bitcoincharts';
 }
+
+//override the provider
+provider = config.providerOverride[provider] || provider;
+
 var DataProvider = require('./exchanges/' + provider);
 var watcher = new DataProvider(config.watch);
 
