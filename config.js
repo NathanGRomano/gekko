@@ -11,7 +11,7 @@ var config = {};
 config.tradingMethod = 'Exponential Moving Averages';
 
 // the candle fetcher we want to use
-config.candleFetcher = 'customCandleFetcher';
+//config.candleFetcher = 'customCandleFetcher';
 
 // provider override
 config.providerOverride = {
