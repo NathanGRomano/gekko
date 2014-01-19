@@ -43,6 +43,7 @@ config.normal = {
   key: 'your-key',
   secret: 'your-secret',
   username: 0, // your username, only fill in when using bitstamp or cexio
+  url: 'custom-url-of-api-to-fetch-the-exchange-trade-data'
 }
 
 //mongodb
