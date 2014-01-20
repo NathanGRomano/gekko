@@ -16,7 +16,7 @@ var log = require('./log');
 var async = require('async');
 var exchangeChecker = require('./exchangeChecker.js');
 var exchanges = require('./exchanges.js');
-var growl = require('growl');
+var growl = require('./growl');
 
 var Manager = function(conf) {
   this.exchangeSlug = conf.exchange.toLowerCase();
@@ -129,6 +129,10 @@ Manager.prototype.trade = function(what) {
       else
         price = this.ticker.ask;
 
+      if (this.config.fundAllocation) {
+        amount *= this.config.fundAllocation;
+      }
+
       this.buy(amount, price);
 
     } else if(what === 'SELL') {
@@ -144,6 +148,12 @@ Manager.prototype.trade = function(what) {
         price = false;
       else
         price = this.ticker.bid;
+
+      /*
+      if (this.config.fundAllocation) {
+        amount *= this.config.fundAllocation;
+      }
+      */
       
       this.sell(amount, price);
     }

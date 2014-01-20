@@ -2,7 +2,7 @@ var util = require('./util.js');
 var _ = require('lodash');
 var log = require('./log.js');
 var moment = require('moment');
-var growl = require('growl');
+var growl = require('./growl');
 
 var Logger = function(config) {
   this.config = util.getConfig();
