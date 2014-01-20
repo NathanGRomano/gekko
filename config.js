@@ -10,13 +10,15 @@ var config = {};
 // Gekko currently only supports Exponential Moving Averages
 config.tradingMethod = 'Exponential Moving Averages';
 
+config.useGrowl = false;
+
 // the candle fetcher we want to use
 //config.candleFetcher = 'customCandleFetcher';
 
 // provider override
-config.providerOverride = {
-  'bitcoincharts': 'local' //use the local trade fetcher instead of bitcoincharts
-};
+/*config.providerOverride = {
+  'bitcoincharts': 'btce-history' //use the local trade fetcher instead of bitcoincharts
+};*/
 
 // Exponential Moving Averages settings:
 config.EMA = {
@@ -43,7 +45,8 @@ config.normal = {
   key: 'your-key',
   secret: 'your-secret',
   username: 0, // your username, only fill in when using bitstamp or cexio
-  url: 'custom-url-of-api-to-fetch-the-exchange-trade-data'
+  url: 'custom-url-of-api-to-fetch-the-exchange-trade-data',
+  fundAllocation: 1
 }
 
 //mongodb
