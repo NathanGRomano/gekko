@@ -117,7 +117,8 @@ config.profitCalculator = {
 config.backtest = {
   candleFile: 'candles.csv',
   from: 0,
-  to: 0
+  to: 0,
+  timeFactor: 1 //the source file time field needs multiplied by this
 }
 
 // For when you want to monitor a market but want to act (trade) on a different one

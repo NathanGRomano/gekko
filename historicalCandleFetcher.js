@@ -15,6 +15,7 @@ CandleCalculator.prototype.set = function() {
 
   this.from = this.settings.from || -Infinity;
   this.to = this.settings.to || Infinity;
+  this.timeFactor = this.settings.timeFactor || 1;
 
   this.currentCandle = this.candles;
   // candles are stored _chronologically_ (first is new, last is old)
@@ -70,7 +71,8 @@ CandleCalculator.prototype.getHistoricalCandles = function() {
 
 CandleCalculator.prototype.addCandle = function(line) {
   line = line.split(',');
-  this.currentTimestamp = parseInt( line[0] );
+  // our data needs to be updated
+  this.currentTimestamp = parseInt( line[0] ) * this.timeFactor;
 
   if(this.currentCandle > 0 && this.currentTimestamp < this.from)
     // this candle happened before the `from`, skip this candle and try again
